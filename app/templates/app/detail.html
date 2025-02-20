@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+</head>
+<body>
+<center>
+
+    <h2> Название: {{ car.make }} </h2>
+    <h3> Модель: {{ car.model}} </h3>
+    <h3> Категория: {{ car.category }} </h3>
+    <h3> Цвет: {{ car.color }} </h3>
+    <h4> Цена: {{ car.price }} </h4>
+    <h3> Год: {{ car.year }} </h3>
+    <h6> Описание: {{ car.description }} </h6>
+
+    <br> <br>
+
+    <img src="{{ car.image.url }}" style="width: 200p; height:100px">
+    <hr>
+
+</center>
+
+</body>
+</html>
