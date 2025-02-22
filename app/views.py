@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.db.models import Q
 from .models import Car, Category,Color
-from .forms import CarCreateForm
+from .forms import CarCreateForm, CarForm
 
 
 def all_view(request):
@@ -14,10 +14,54 @@ def all_view(request):
 
     return render(request=request, template_name='app/main_all_cars.html', context={"cars":cars})
 
+
 def detail_view(request, pk):
+
     car = Car.objects.get(id=pk)
 
-    return render(request=request, template_name='app/detail.html', context={"car":car})
+    if request.method == 'POST':
+        form = CarForm(request.POST, request.FILES, instance=car)
+        if form.is_valid():
+            form.save()
+
+
+    form = CarForm(instance=car)
+
+    return render(request=request, template_name='app/detail.html', context={"car": car, "form": form})
+
+
+def detail_view_2(request, pk):
+    categories = Category.objects.all()
+    colors = Color.objects.all()
+    car = Car.objects.get(id=pk)
+
+    if  request.method == 'POST':
+        make = request.POST['make']
+        model = request.POST['model']
+        year = request.POST['year']
+        description = request.POST['description']
+        price = request.POST['price']
+        color_id = request.POST['color_id']
+        category_id = request.POST['category_id']
+        image = request.FILES['image']
+
+        category = Category.objects.get(id=category_id)
+        color = Color.objects.get(id=color_id)
+
+        car.make = make
+        car.model= model
+        car.year = year
+        car.description = description
+        car.price = price
+        car.color_id = color
+        car.category_id = category
+        car.image = image
+
+        car.save()
+        return redirect('')
+
+    return render(request=request, template_name='app/detail_2.html', context={"car":car, "categories": categories,
+                                                                             "colors":colors})
 
 def category_view(request, category):
     cars = Car.objects.filter(category__title=category)
@@ -61,3 +105,9 @@ def car_create_view_2(request):
     form = CarCreateForm
 
     return render(request=request, template_name='app/car_create2', context={'form':form})
+
+def delete_view(reguest, pk):
+    car = Car.objects.get(id=pk)
+    car.delete()
+
+    return redirect('')

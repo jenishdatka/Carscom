@@ -5,3 +5,10 @@ class CarCreateForm (forms.ModelForm):
     class Meta:
         model=Car
         fields =('make','description', 'model', 'year','price', 'color', 'category' 'image')
+
+
+
+class CarForm (forms.ModelForm):
+    class Meta:
+        model=Car
+        fields =('make','description', 'model', 'year','price', 'color', 'category' 'image')
